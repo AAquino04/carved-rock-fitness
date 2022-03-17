@@ -2,17 +2,27 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
+import Spinner from "./Spinner";
 import { getProducts } from "./services/productService";
 
 export default function App() {
   const [size, setSize] = useState("");
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProducts("shoes")
-      .then((response) => setProducts(response))
-      .catch((err) => setError(err));
+    async function init() {
+      try {
+        const response = await getProducts("shoes");
+        setProducts(response);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    init();
   }, []); // Executes only after the first render
 
   function renderProduct(p) {
@@ -32,6 +42,7 @@ export default function App() {
     : products;
 
   if (error) throw error;
+  if (loading) return <Spinner />
   return (
     <>
       <div className="content">

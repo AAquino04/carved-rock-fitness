@@ -192,6 +192,7 @@ form > div {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10%;
 }
 .lds-dual-ring {
   display: inline-block;
