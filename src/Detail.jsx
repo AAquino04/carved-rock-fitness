@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "./services/useFetch";
 
-export default function Detail() {
+export default function Detail(props) {
     const [sku, setSku] = useState("");
     const { id } = useParams();
 
@@ -32,8 +32,12 @@ export default function Detail() {
 
             <p>
                 <button
+                    disabled={!sku}
                     className="btn btn-primary"
-                    onClick={() => navigate("/cart")}
+                    onClick={() => {
+                        props.addToCart(id, sku);
+                        navigate("/cart");
+                    }}
                 >
                     Add to cart
                 </button>
