@@ -24,7 +24,7 @@ function useFetch(url) {
             }
         }
         init();
-    }, [url]); // Executes after url changes
+    }, [baseUrl, url]); // Executes after url changes
 
     return { data, error, loading }
 }
