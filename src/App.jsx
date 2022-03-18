@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
 import Spinner from "./Spinner";
+import useFetch from "./services/useFetch";
 
 
 export default function App() {
   const [size, setSize] = useState("");
+
+  const { data: products,
+    loading, error } = useFetch("products/?category=shoes");
 
   function renderProduct(p) {
     return (
