@@ -133,6 +133,10 @@ img {
   vertical-align: middle;
 }
 
+.cart-img {
+  max-width: 300px;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #364147;

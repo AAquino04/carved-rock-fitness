@@ -42,7 +42,7 @@ export default function Detail(props) {
                     Add to cart
                 </button>
             </p>
-            <img src={`/images/${product.image}`} alt={product.category} />
+            <img className="cart-img" src={`/images/${product.image}`} alt={product.category} />
         </div>
     );
 }

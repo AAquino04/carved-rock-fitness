@@ -1,9 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetchAll from "./services/useFetchAll";
 import Spinner from "./Spinner";
+import { CartContext } from "./cartContext";
 
-export default function Cart({ cart, dispatch }) {
+export default function Cart() {
+  const { cart, dispatch } = useContext(CartContext);
   const navigate = useNavigate();
   const urls = cart.map((i) => `products/${i.id}`);
   const { data: products, loading, error } = useFetchAll(urls);
@@ -57,6 +59,7 @@ export default function Cart({ cart, dispatch }) {
           "Your cart is empty"
           : `${numItemsInCart} Item${numItemsInCart > 1 ? "s" : ""} in My Cart`}
       </h1>
+
       <ul>{cart.map(renderItem)}</ul>
 
       {numItemsInCart > 0
