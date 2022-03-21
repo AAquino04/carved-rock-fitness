@@ -6,12 +6,12 @@ import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./cartContext";
 
 ReactDOM.render(
-    <ErrorBoundary>
-        <BrowserRouter>
-            <CartProvider>
-                <App />
-            </CartProvider>
-        </BrowserRouter>
-    </ErrorBoundary>,
-    document.getElementById("root")
+  <ErrorBoundary>
+    <BrowserRouter>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </BrowserRouter>
+  </ErrorBoundary>,
+  document.getElementById("root")
 );

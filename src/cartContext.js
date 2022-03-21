@@ -3,6 +3,7 @@ import cartReducer from "./cartReducer";
 
 const CartContext = React.createContext(null);
 
+// Loads cart data
 let initialCart;
 try {
   initialCart = JSON.parse(localStorage.getItem("cart")) ?? []; // If null, use []
