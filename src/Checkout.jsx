@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import { saveShippingAddress } from "./services/shippingService";
+
+const STATUS = {
+  IDLE: "IDLE",
+  SUBMITTED: "SUBMITTED",
+  SUBMITTING: "SUBMITTING",
+  COMPLETED: "COMPLETED"
+}
 
 // Declaring outside component to avoid recreation on each render
 const emptyAddress = {
@@ -6,8 +14,10 @@ const emptyAddress = {
   country: "",
 };
 
-export default function Checkout({ cart }) {
+export default function Checkout({ cart, emptyCart }) {
   const [address, setAddress] = useState(emptyAddress);
+  const [status, setStatus] = useState(STATUS.IDLE);
+  const [saveError, setSaveError] = useState(null);
 
   function handleChange(e) {
     e.persist(); // persist event (react might garbage collect it before function is called)
@@ -24,7 +34,21 @@ export default function Checkout({ cart }) {
   }
 
   async function handleSubmit(event) {
-    // TODO
+    event.preventDefault(); // informs browser to not send form to server
+    setStatus(STATUS.SUBMITTING);
+
+    try {
+      await saveShippingAddress(address);
+      emptyCart();
+      setStatus(STATUS.COMPLETED);
+    } catch (err) {
+      setSaveError(err);
+    }
+  }
+
+  if (saveError) throw saveError;
+  if (status === STATUS.COMPLETED) {
+    return <h1>Thanks for shopping!</h1>
   }
 
   return (
@@ -65,6 +89,7 @@ export default function Checkout({ cart }) {
             type="submit"
             className="btn btn-primary"
             value="Save Shipping Info"
+            disabled={status === STATUS.SUBMITTING}
           />
         </div>
       </form>
