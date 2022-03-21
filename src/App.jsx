@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
+import cartReducer from "./cartReducer";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -8,46 +9,18 @@ import Cart from "./Cart";
 import Checkout from "./Checkout";
 import { Routes, Route } from "react-router-dom";
 
+let initialCart;
+
+try {
+  initialCart = JSON.parse(localStorage.getItem("cart")) ?? []; // If null, use []
+} catch (error) {
+  console.error("The cart could not be parsed into JSON");
+}
+
 export default function App() {
-  const [cart, setCart] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("cart")) ?? []; // If null, use []
-    } catch (error) {
-      console.error("The cart could not be parsed into JSON");
-      return [];
-    }
-  }); // Functions are lazy rendered, so this function will only run on first render
+  const [cart, dispatch] = useReducer(cartReducer, initialCart);
 
   useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
-
-  function addToCart(id, sku) {
-    setCart((items) => {
-      const itemInCart = items.find((i) => i.sku === sku);
-
-      if (itemInCart) { // If item in cart, increase quantity
-        return items.map((i) => i.sku === sku
-          ? { ...i, quantity: i.quantity + 1 }
-          : i);
-      } else { // Otherwise, concatenate item to cart items
-        return [...items, { id, sku, quantity: 1 }];
-      }
-    })
-  }
-
-  function updateQuantity(sku, quantity) {
-    setCart((items) => {
-      if (quantity === 0) { // Removes item from cart if quantity = 0 
-        return items.filter((i) => i.sku !== sku);
-      }
-      return items.map((i) => i.sku === sku
-        ? { ...i, quantity }
-        : i);
-    })
-  }
-
-  function emptyCart() {
-    setCart([]);
-  }
 
   return (
     <>
@@ -59,10 +32,10 @@ export default function App() {
             <Route path="/:category" element={<Products />} />
             <Route
               path="/:category/:id"
-              element={<Detail addToCart={addToCart} />}
+              element={<Detail dispatch={dispatch} />}
             />
-            <Route path="/cart" element={<Cart cart={cart} updateQuantity={updateQuantity} />} />
-            <Route path="/checkout" element={<Checkout cart={cart} emptyCart={emptyCart} />} />
+            <Route path="/cart" element={<Cart cart={cart} dispatch={dispatch} />} />
+            <Route path="/checkout" element={<Checkout dispatch={dispatch} />} />
           </Routes>
         </main>
       </div>
