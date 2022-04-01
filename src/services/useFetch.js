@@ -34,7 +34,6 @@ export default function useFetch(url) {
 }
 
 export function Fetch({ url, children }) {
-    const { data, loading, error } = useFetch(url);
-
+    const { data, loading, error } = useFetch(url); // Component to wrap the render function of class components
     return children(data, loading, error);
 }

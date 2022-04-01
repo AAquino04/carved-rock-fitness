@@ -7,8 +7,8 @@ import { useCart } from "./cartContext";
 export default function Cart() {
   const { cart, dispatch } = useCart();
   const navigate = useNavigate();
-  const urls = cart.map((i) => `products/${i.id}`);
-  const { data: products, loading, error } = useFetchAll(urls);
+  const urls = cart.map((i) => `products/${i.id}`); // Array de URLs
+  const { data: products, loading, error } = useFetchAll(urls); // Request para cada URL do array
 
   function renderItem(itemInCart) {
     const { id, sku, quantity } = itemInCart;

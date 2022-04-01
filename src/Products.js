@@ -5,8 +5,8 @@ import useFetch from "./services/useFetch";
 import { useParams, Link } from "react-router-dom";
 
 export default function Products() {
-  const [size, setSize] = useState("");
-  const { category } = useParams();
+  const [size, setSize] = useState(""); // Local state
+  const { category } = useParams(); // Gets data from URL
 
   const { data: products,
     loading, error } = useFetch(`products/?category=${category}`);
